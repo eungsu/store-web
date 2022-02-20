@@ -28,4 +28,6 @@ public class MemberRegisterForm {
 	@Pattern(regexp = "\\d{2,3}-\\d{3,4}-\\d{4}", message = "유효한 전화번호 형식이 아닙니다.")
 	private String tel;
 	
+	private String role;
+	
 }

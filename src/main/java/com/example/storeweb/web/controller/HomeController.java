@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.storeweb.constant.Role;
 import com.example.storeweb.entity.Member;
 import com.example.storeweb.exception.StoreException;
 import com.example.storeweb.service.MemberService;
@@ -46,6 +47,7 @@ public class HomeController {
     				.password(passwordEncoder.encode(form.getPassword()))
     				.name(form.getName())
     				.tel(form.getTel())
+    				.role(Role.valueOf(form.getRole()))
     				.enabled(true).build();
     		memberService.saveMember(member);
     	} catch (StoreException e) {
