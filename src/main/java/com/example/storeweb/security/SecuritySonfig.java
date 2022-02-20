@@ -12,12 +12,12 @@ public class SecuritySonfig extends WebSecurityConfigurerAdapter {
    protected void configure(HttpSecurity http) throws Exception {
        http
         .authorizeRequests()
-        .antMatchers("/").permitAll()
+        .antMatchers("/", "/register", "/completed").permitAll()
         .anyRequest().authenticated();
    }
 
    @Override
    public void configure(WebSecurity web) throws Exception {
-       web.ignoring().antMatchers("/h2-console/**");
+       web.ignoring().antMatchers("/resources/**", "/h2-console/**");
    }
 }
