@@ -2,10 +2,14 @@ package com.example.storeweb.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.example.storeweb.constant.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +41,10 @@ public class Member extends BaseTimeEntity {
 
     @Column(name = "member_tel")
     private String tel;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_role")
+    private Role role;
 
     @Column(name = "member_enabled")
     private boolean enabled;

@@ -43,6 +43,16 @@
                 	<form:input class="form-control" path="tel" id="tel-field" placeholder="010-1234-5678"/>
                 	<form:errors path="tel" cssClass="text-danger"></form:errors>
                 </div>
+                <div class="mb-3">
+                	<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="role" id="role_user" value="ROLE_USER" checked="checked">
+						<label class="form-check-label" for="role_user">일반 회원</label>
+					</div>
+                	<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="role" id="role_amdin" value="ROLE_ADMIN" disabled="disabled">
+						<label class="form-check-label" for="role_amdin">관리자</label>
+					</div>
+                </div>
                 <div class="text-end">
                 	<a href="/" class="btn btn-secondary">취소</a>
                 	<button type="submit" class="btn btn-primary">회원가입</button>

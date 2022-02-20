@@ -61,7 +61,7 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String loginForm(Model model) {
+    public String loginForm() {
         return "loginForm";
     }
 }

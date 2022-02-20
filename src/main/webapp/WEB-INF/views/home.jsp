@@ -23,7 +23,7 @@
                 <sec:authorize access="!isAuthenticated()">
                     <div>
                         <a href="/register" class="btn btn-primary btn-lg">회원가입</a>
-                        <a href="/loginform" class="btn btn-primary btn-lg">로그인</a>
+                        <a href="/login" class="btn btn-primary btn-lg">로그인</a>
                     </div>
                 </sec:authorize>
             </div>
