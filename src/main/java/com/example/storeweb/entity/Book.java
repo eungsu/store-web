@@ -8,14 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "books")
 public class Book extends BaseTimeEntity {
-    @Id
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
     private Long id;
@@ -29,7 +32,7 @@ public class Book extends BaseTimeEntity {
     @Column(name = "book_publisher", nullable = false)
     private String publisher;
 
-    @Column(name = "book_description")
+    @Column(name = "book_description", length = 2000)
     private String description;
 
     @Column(name = "book_price")
@@ -43,4 +46,14 @@ public class Book extends BaseTimeEntity {
 
     @Column(name = "book_stock")
     private int stock;
+
+    public Book(String title, String author, String publisher, String description, int price) {
+		this.title = title;
+		this.author = author;
+		this.publisher = publisher;
+		this.description = description;
+		this.price = price;
+		this.discountPrice = (int) (price*0.9);
+		this.stock = 20;
+	}
 }

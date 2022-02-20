@@ -22,6 +22,7 @@ public class SecuritySonfig extends WebSecurityConfigurerAdapter {
        http
         .authorizeRequests()
         .antMatchers("/", "/register", "/completed").permitAll()
+        .antMatchers("/book/**").permitAll()
         .anyRequest().authenticated()
         .and()
         	.formLogin()
