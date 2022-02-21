@@ -19,7 +19,7 @@ import lombok.Setter;
 public class CartItem extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_no")
+    @Column(name = "cart_item_id")
     private Long id;
 
     @ManyToOne
