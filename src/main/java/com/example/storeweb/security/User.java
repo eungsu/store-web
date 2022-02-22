@@ -10,7 +10,7 @@ import com.example.storeweb.entity.Member;
 import lombok.ToString;
 
 @ToString(of = {"id", "email", "name", "tel", "enabled", "authorities"})
-public class UserDetailsImpl implements UserDetails {
+public class User implements UserDetails {
 	
 	private static final long serialVersionUID = -8513640359886600514L;
 	
@@ -22,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
 	private boolean enabled;
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Member member, Collection<? extends GrantedAuthority> authorities) {
+	public User(Member member, Collection<? extends GrantedAuthority> authorities) {
 		this.id = member.getId();
 		this.email = member.getEmail();
 		this.password = member.getPassword();
