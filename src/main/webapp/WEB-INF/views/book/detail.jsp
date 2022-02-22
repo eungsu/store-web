@@ -82,10 +82,10 @@
 									</div>
 								</div>
 								<div class="d-grid gap-2 mb-2">
-									<button class="btn btn-primary" type="button">카트에 담기</button>
+									<button class="btn btn-primary" type="button" id="btn-add-cart">카트에 담기</button>
 								</div>
 								<div class="d-grid gap-2">
-									<button class="btn btn-success" type="button">바로구매</button>
+									<button class="btn btn-success" type="submit">바로구매</button>
 								</div>
 							</form>
 						</div>
@@ -130,6 +130,10 @@ $(function() {
 			return;
 		}
 		$quantityField.val(quantity + 1);
+	});
+	
+	$("#btn-add-cart").click(function() {
+		$("#form-order").attr("action", "cart/add").trigger("submit");
 	});
 })
 </script>
