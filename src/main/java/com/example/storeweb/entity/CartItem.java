@@ -26,6 +26,20 @@ public class CartItem extends BaseTimeEntity {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
     
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+    
     @Column(name = "cart_item_quantity")
     private int quantity;
+
+    public int getItemPrice() {
+    	return book.getPrice()*quantity;
+    }
+    public int getItemSellPrice() {
+    	return book.getDiscountPrice()*quantity;
+    }
+    public int getItemDiscountPrice() {
+    	return getItemPrice() - getItemSellPrice();
+    }
 }
