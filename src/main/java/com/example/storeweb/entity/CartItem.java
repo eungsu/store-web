@@ -23,10 +23,6 @@ public class CartItem extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
-
-    @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
     
