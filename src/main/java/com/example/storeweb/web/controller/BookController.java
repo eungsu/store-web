@@ -29,7 +29,7 @@ public class BookController {
 	}
 	
 	@GetMapping("/detail")
-	public String detail(@RequestParam(name = "id") Long bookId, Model model) {
+	public String detail(@RequestParam(name = "id") long bookId, Model model) {
 		log.info("책 상세정보 조회");
 		log.info("book_id [" + bookId + "]");
 		model.addAttribute("book", bookService.getBookDetail(bookId));
