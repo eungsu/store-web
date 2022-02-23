@@ -19,12 +19,12 @@ import lombok.Setter;
 public class Review extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "review_id")
 	private Long id;
 	
-	@ManyToOne
-	@JoinColumn(name = "member_id", nullable = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "member_id")
 	private Member member;
 	
 	@Column(name = "review_content", nullable = false)
