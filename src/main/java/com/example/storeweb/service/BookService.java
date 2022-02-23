@@ -19,7 +19,7 @@ public class BookService {
 		return bookRepository.findAll();
 	}
 
-	public Object getBookDetail(long bookId) {
+	public Book getBookDetail(long bookId) {
 		return bookRepository.getById(bookId);
 	}
 }
