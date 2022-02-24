@@ -9,6 +9,7 @@ import com.example.storeweb.entity.CartItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     
-	Optional<CartItem> findByMemberIdAndBookId(Long memberId, Long bookId);
-	List<CartItem> findAllByMemberId(Long memberId);
+	Optional<CartItem> findByMemberIdAndBookId(long memberId, long bookId);
+	List<CartItem> findAllByMemberId(long memberId);
+	void deleteByIdAndMemberId(long cartItemId, long memberId);
 }

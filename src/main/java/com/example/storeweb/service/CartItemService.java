@@ -11,6 +11,7 @@ import com.example.storeweb.entity.Member;
 import com.example.storeweb.repository.BookRepository;
 import com.example.storeweb.repository.CartItemRepository;
 import com.example.storeweb.repository.MemberRepository;
+import com.example.storeweb.util.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,9 +23,10 @@ public class CartItemService {
 	private final CartItemRepository cartItemRepository;
 	private final MemberRepository memberRepository;
 	
-	public void insertCartItem(long memberId, long bookId, int quantity) {
-		
+	public void insertCartItem(long bookId, int quantity) {
+		long memberId = SecurityUtils.getMemberId();		
 		Optional<CartItem> optional = cartItemRepository.findByMemberIdAndBookId(memberId, bookId);
+		
 		if (optional.isEmpty()) {
 			Member member = memberRepository.getById(memberId);
 			Book book = bookRepository.getById(bookId);
@@ -45,28 +47,30 @@ public class CartItemService {
 		
 	}
 
-	public List<CartItem> getCartItems(long memberId) {
+	public List<CartItem> getCartItems() {
+		long memberId = SecurityUtils.getMemberId();
 		return cartItemRepository.findAllByMemberId(memberId);
 	}
+	
+	public List<CartItem> getCartItems(List<Long> cartItemIds) {
+		return cartItemRepository.findAllById(cartItemIds);
+	}
 
-	public void updateCartItem(long memberId, long cartItemId, int quantity) {
+	public void updateCartItem(long cartItemId, int quantity) {
+		long memberId = SecurityUtils.getMemberId();
 		CartItem cartItem = cartItemRepository.getById(cartItemId);
-		
 		if (cartItem.getMember().getId() == memberId) {
 			cartItem.setQuantity(quantity);
 			cartItemRepository.save(cartItem);
 		}		
 	}
 
-	public void deleteCartItem(long memberId, List<Long> cartItemIds) {
-		for (long cartItemId : cartItemIds) {
-			CartItem cartItem = cartItemRepository.getById(cartItemId);
-			
-			if (cartItem.getMember().getId() == memberId) {
-				cartItemRepository.delete(cartItem);
-			}	
-		}
+	public void deleteCartItem(List<Long> cartItemIds) {
+		long memberId = SecurityUtils.getMemberId();
 		
+		for (long cartItemId : cartItemIds) {
+			cartItemRepository.deleteByIdAndMemberId(cartItemId, memberId);
+		}
 	}
 	
 }
