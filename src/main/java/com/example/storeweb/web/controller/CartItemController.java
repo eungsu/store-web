@@ -1,6 +1,7 @@
 package com.example.storeweb.web.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,7 +90,7 @@ public class CartItemController {
 		
 		List<OrderItem> orderItems = cartItems.stream()
 				.map(cartItem -> new OrderItem(cartItem.getBook(), cartItem.getBook().getDiscountPrice(), cartItem.getQuantity()))
-				.toList();
+				.collect(Collectors.toList());
 		model.addAttribute("orderItems", orderItems);		
 		
 		return "/order/form";
