@@ -2,6 +2,7 @@ package com.example.storeweb.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +27,10 @@ public class Review extends BaseTimeEntity {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "member_id")
 	private Member member;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "book_id")
+	private Book book;
 	
 	@Column(name = "review_content", nullable = false)
 	private String content;
