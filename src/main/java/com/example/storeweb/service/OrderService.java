@@ -1,20 +1,19 @@
 package com.example.storeweb.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.storeweb.constant.OrderStatus;
 import com.example.storeweb.entity.Book;
+import com.example.storeweb.entity.Member;
 import com.example.storeweb.entity.Order;
 import com.example.storeweb.entity.OrderItem;
 import com.example.storeweb.repository.BookRepository;
 import com.example.storeweb.repository.MemberRepository;
 import com.example.storeweb.repository.OrderItemRepository;
 import com.example.storeweb.repository.OrderRepository;
-import com.example.storeweb.util.SecurityUtils;
 import com.example.storeweb.web.form.OrderForm;
 
 import lombok.RequiredArgsConstructor;
@@ -28,44 +27,55 @@ public class OrderService {
 	private final OrderItemRepository orderItemRepository;
 	private final OrderRepository orderRepository;
 	
-	public void insertOrder(OrderForm orderForm) {
-		Order order = new Order();
-		order.setMember(memberRepository.getById(SecurityUtils.getMemberId()));
-		order.setTitle(this.getTitle(orderForm));
-		order.setOrderStatus(OrderStatus.ORDER);
-		order.setTotalPrice(this.getTotalPrice(orderForm));
-		order.setTotalQuantity(this.getTotalQuantity(orderForm));
-		order.setUsePoint(this.getUsePoint(orderForm));
-		order.setDepositPoint(this.getDepositPoint(orderForm));
-		order.setPaymentPrice(this.getPaymentPrice(orderForm));
+	public long insertOrder(OrderForm orderForm, long memberId) {		
+		Member member = memberRepository.getById(memberId);
 		
+		Order order = this.createOrder(orderForm, member);
 		orderRepository.save(order);
 		
+		List<OrderItem> orderItems = this.getOrderItems(order, orderForm);
+		orderItemRepository.saveAll(orderItems);	
 		
-		
+		return order.getId();
 	}
+	
+	public Order getOrderDetail(long orderId) {
+		return orderRepository.getById(orderId);
+	}
+	
+	private Order createOrder(OrderForm orderForm, Member member) {
+		Book book = bookRepository.getById(orderForm.getIds()[0]);
 
-	private String getTitle(OrderForm orderForm) {
-		long bookId = orderForm.getIds()[0];
-		Book book = bookRepository.getById(bookId);
-		if (orderForm.getIds().length > 1) {
-			return book.getTitle() + " 외 " + (orderForm.getIds().length - 1) + "종";
+		Order order = new Order();
+		order.setMember(member);
+		order.setTitle(orderForm.getTitle(book));
+		order.setOrderStatus(OrderStatus.ORDER);
+		order.setTotalPrice(orderForm.getTotalPrice());
+		order.setTotalQuantity(orderForm.getTotalQuantity());
+		order.setUsePoint(orderForm.getUsePoint());
+		order.setDepositPoint(orderForm.getDepositPoint());
+		order.setPaymentPrice(orderForm.getPaymentPrice());
+		
+		return order;		
+	}
+	
+	private List<OrderItem> getOrderItems(Order order, OrderForm orderForm) {
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
+		for (int index = 0; index < orderForm.getIds().length; index++) {
+			long bookId = orderForm.getIds()[index];
+			int quantity = orderForm.getQuantities()[index];
+			
+			Book book = bookRepository.getById(bookId);
+			book.setStock(book.getStock() - quantity);
+			
+			OrderItem orderItem = new OrderItem();
+			orderItem.setBook(book);
+			orderItem.setOrder(order);
+			orderItem.setPrice(book.getDiscountPrice());
+			orderItem.setQuantity(quantity);
+			
+			orderItems.add(orderItem);
 		}
-		return book.getTitle();
-	}
-	private int getTotalPrice(OrderForm orderForm) {
-		return Arrays.stream(orderForm.getPrices()).sum();
-	}
-	private int getTotalQuantity(OrderForm orderForm) {
-		return Arrays.stream(orderForm.getQuantities()).sum();
-	}
-	private int getUsePoint(OrderForm orderForm) {
-		return orderForm.getUsePoint();
-	}
-	private int getDepositPoint(OrderForm orderForm) {
-		return (int) (getPaymentPrice(orderForm)*0.03);
-	}
-	private int getPaymentPrice(OrderForm orderForm) {
-		return getTotalPrice(orderForm) - getUsePoint(orderForm);
+		return orderItems;
 	}
 }

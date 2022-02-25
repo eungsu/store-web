@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-<c:set var="menu" value="cart" />
+<c:set var="menu" value="book" />
 <%@ include file="../common/nav.jsp" %>
 <div class="container my-3">
     <div class="row mb-3">

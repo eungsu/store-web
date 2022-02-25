@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.storeweb.entity.Book;
+import com.example.storeweb.entity.Order;
 import com.example.storeweb.entity.OrderItem;
+import com.example.storeweb.exception.MemberDismatchException;
 import com.example.storeweb.service.BookService;
 import com.example.storeweb.service.OrderService;
+import com.example.storeweb.util.SecurityUtils;
 import com.example.storeweb.web.form.OrderForm;
 
 import lombok.RequiredArgsConstructor;
@@ -53,13 +56,21 @@ public class OrderController {
 		log.info("주문 정보 저장하기");
 		log.info("주문정보 : " + orderForm);
 		
-		orderService.insertOrder(orderForm);
+		long orderId = orderService.insertOrder(orderForm, SecurityUtils.getMemberId());
 		
-		return "redirect:/order/completed";
+		return "redirect:/order/completed?id=" + orderId;
 	}
 	
 	@GetMapping("/completed")
-	public String completed() {
+	public String completed(@RequestParam("id") long orderId, Model model) {
+		log.info("주문 완료 정보 조회하기");
+		log.info("주문아이디: " + orderId);
+		
+		Order order = orderService.getOrderDetail(orderId);
+		if (order.getMember().getId() != SecurityUtils.getMemberId()) {
+			throw new MemberDismatchException("주문자와 일치하지 않습니다.");
+		}
+		model.addAttribute("order", order);
 		
 		return "order/completed";
 	}

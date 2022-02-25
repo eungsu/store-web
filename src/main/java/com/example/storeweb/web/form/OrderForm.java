@@ -1,5 +1,9 @@
 package com.example.storeweb.web.form;
 
+import java.util.Arrays;
+
+import com.example.storeweb.entity.Book;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,5 +17,24 @@ public class OrderForm {
 	private int[] prices;
 	private int[] quantities;
 	private int usePoint;
+	
+	public String getTitle(Book book) {
+		if (ids.length > 1) {
+			return book.getTitle() + " 외 " + (ids.length - 1) + "종";
+		}
+		return book.getTitle();
+	}
+	public int getTotalPrice() {
+		return Arrays.stream(prices).sum();
+	}
+	public int getTotalQuantity() {
+		return Arrays.stream(quantities).sum();
+	}
+	public int getDepositPoint() {
+		return (int) (getPaymentPrice()*0.03);
+	}
+	public int getPaymentPrice() {
+		return getTotalPrice() - getUsePoint();
+	}
 }
 
