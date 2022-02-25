@@ -16,25 +16,23 @@ public class OrderForm {
 	private long[] ids;
 	private int[] prices;
 	private int[] quantities;
+	private int totalBookPrice;
+	private int totalOrderPrice;
+	private int totalDiscountPrice;
 	private int usePoint;
-	
+	private int totalPaymentPrice;
+
 	public String getTitle(Book book) {
 		if (ids.length > 1) {
 			return book.getTitle() + " 외 " + (ids.length - 1) + "종";
 		}
 		return book.getTitle();
 	}
-	public int getTotalPrice() {
-		return Arrays.stream(prices).sum();
-	}
 	public int getTotalQuantity() {
 		return Arrays.stream(quantities).sum();
 	}
 	public int getDepositPoint() {
-		return (int) (getPaymentPrice()*0.03);
-	}
-	public int getPaymentPrice() {
-		return getTotalPrice() - getUsePoint();
+		return (int) (totalPaymentPrice*0.03);
 	}
 }
 

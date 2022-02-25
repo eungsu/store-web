@@ -38,11 +38,12 @@ public class OrderController {
 		
 		Book book = bookService.getBookDetail(bookId);
 		
-		int totalPrice = book.getPrice()*quantity;
+		int totalBookPrice = book.getPrice()*quantity;
 		int totalPaymentPrice = book.getDiscountPrice()*quantity;
 		
-		model.addAttribute("totalPrice", book.getPrice());
-		model.addAttribute("totalDiscountPrice", totalPrice - totalPaymentPrice);
+		model.addAttribute("totalBookPrice", totalBookPrice);
+		model.addAttribute("totalDiscountPrice", totalBookPrice - totalPaymentPrice);
+		model.addAttribute("totalOrderPrice", totalPaymentPrice);
 		model.addAttribute("totalPaymentPrice", totalPaymentPrice);
 		
 		OrderItem orderItem = new OrderItem(book, book.getDiscountPrice(), quantity);

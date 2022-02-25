@@ -82,11 +82,12 @@ public class CartItemController {
 		
 		List<CartItem> cartItems = cartItemService.getCartItems(cartItemIds);
 		
-		int totalPrice = cartItems.stream().mapToInt(cartItem -> cartItem.getItemPrice()).sum();
+		int totalBookPrice = cartItems.stream().mapToInt(cartItem -> cartItem.getItemPrice()).sum();
 		int totalPaymentPrice = cartItems.stream().mapToInt(cartItem -> cartItem.getItemSellPrice()).sum();
 		
-		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("totalDiscountPrice", totalPrice - totalPaymentPrice);
+		model.addAttribute("totalBookPrice", totalBookPrice);
+		model.addAttribute("totalDiscountPrice", totalBookPrice - totalPaymentPrice);
+		model.addAttribute("totalOrderPrice", totalPaymentPrice);
 		model.addAttribute("totalPaymentPrice", totalPaymentPrice);
 		
 		List<OrderItem> orderItems = cartItems.stream()

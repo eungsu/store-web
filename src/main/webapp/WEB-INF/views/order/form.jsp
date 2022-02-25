@@ -21,7 +21,11 @@
         </div>
     </div>
 	<form id="form-order-item" method="post" action="/order/insert">
+		<input type="hidden" name="totalBookPrice" value="${totalBookPrice}" />
+		<input type="hidden" name="totalDiscountPrice" value="${totalDiscountPrice}" />
+		<input type="hidden" name="totalOrderPrice" value="${totalOrderPrice}" />
 		<input type="hidden" name="usePoint" value="1000" />
+		<input type="hidden" name="totalPaymentPrice" value="${totalPaymentPrice}" />
 		<sec:csrfInput/>
 	    <div class="row mb-2">
 	    	<div class="col-12">
@@ -61,8 +65,8 @@
 									<td><strong class="text-danger"><fmt:formatNumber value="${orderItem.price }" /></strong> 원</td>
 									<td><fmt:formatNumber value="${orderItem.quantity }" /></td>
 									<td>
-										<strong class="text-danger"><fmt:formatNumber value="${orderItem.quantity * orderItem.price }" /></strong> 원
-										<small>(<fmt:formatNumber value="${orderItem.itemDiscountPrice }"/> 원 할인)</small>
+										<strong class="text-danger"><fmt:formatNumber value="${orderItem.totalOrderPrice }" /></strong> 원
+										<small>(<fmt:formatNumber value="${orderItem.totalDiscountPrice }"/> 원 할인)</small>
 									</td>
 								</tr>
 							</c:forEach>
@@ -73,7 +77,7 @@
 				<div class="card">
 					<div class="card-body">
 						<p>결재금액을 확인하세요</p>
-						<div class="d-flex justify-content-between mb-2"><strong>총 상품금액</strong> <span><strong><fmt:formatNumber value="${totalPrice }"/></strong> 원</span></div>
+						<div class="d-flex justify-content-between mb-2"><strong>총 상품금액</strong> <span><strong><fmt:formatNumber value="${totalBookPrice }"/></strong> 원</span></div>
 						<div class="d-flex justify-content-between mb-3"><strong>총 할인금액</strong> <span><strong><fmt:formatNumber value="${totalDiscountPrice }"/></strong> 원</span></div>
 						<div class="d-flex justify-content-between mb-3"><strong>포인트 사용액</strong> <span><strong>1,000</strong> 원</span></div>
 						<hr/>

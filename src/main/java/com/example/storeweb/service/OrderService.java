@@ -38,11 +38,15 @@ public class OrderService {
 		
 		return order.getId();
 	}
-	
+
 	public Order getOrderDetail(long orderId) {
 		return orderRepository.getById(orderId);
 	}
-	
+
+    public List<Order> getOrders(long memberId) {
+		return orderRepository.findAllByMemberId(memberId);
+    }
+
 	private Order createOrder(OrderForm orderForm, Member member) {
 		Book book = bookRepository.getById(orderForm.getIds()[0]);
 
@@ -50,32 +54,35 @@ public class OrderService {
 		order.setMember(member);
 		order.setTitle(orderForm.getTitle(book));
 		order.setOrderStatus(OrderStatus.ORDER);
-		order.setTotalPrice(orderForm.getTotalPrice());
-		order.setTotalQuantity(orderForm.getTotalQuantity());
+		order.setTotalBookPrice(orderForm.getTotalBookPrice());
+		order.setTotalDiscountPrice(orderForm.getTotalDiscountPrice());
+		order.setTotalOrderPrice(orderForm.getTotalOrderPrice());
 		order.setUsePoint(orderForm.getUsePoint());
+		order.setTotalPaymentPrice(orderForm.getTotalPaymentPrice() - orderForm.getUsePoint());
+		order.setTotalQuantity(orderForm.getTotalQuantity());
 		order.setDepositPoint(orderForm.getDepositPoint());
-		order.setPaymentPrice(orderForm.getPaymentPrice());
-		
-		return order;		
+
+		return order;
 	}
-	
+
 	private List<OrderItem> getOrderItems(Order order, OrderForm orderForm) {
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		for (int index = 0; index < orderForm.getIds().length; index++) {
 			long bookId = orderForm.getIds()[index];
 			int quantity = orderForm.getQuantities()[index];
-			
+
 			Book book = bookRepository.getById(bookId);
 			book.setStock(book.getStock() - quantity);
-			
+
 			OrderItem orderItem = new OrderItem();
 			orderItem.setBook(book);
 			orderItem.setOrder(order);
 			orderItem.setPrice(book.getDiscountPrice());
 			orderItem.setQuantity(quantity);
-			
+
 			orderItems.add(orderItem);
 		}
 		return orderItems;
 	}
+
 }
